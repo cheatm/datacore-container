@@ -1,0 +1,35 @@
+version: '3'
+services:
+  mdlink2:
+    container_name: mdlink2
+    image: "mdlink"
+    network_mode: "host"
+    command: bin/mdlink2 mdlink2
+    volumes:
+      - ./data:/mdlink-1.2-linux/data
+      - ./etc:/mdlink-1.2-linux/etc
+  qms:
+    container_name: qms
+    image: "mdlink"
+    network_mode: "host"
+    command: bin/qms2 qms2
+    volumes:
+      - ./data:/mdlink-1.2-linux/data
+      - ./etc:/mdlink-1.2-linux/etc
+  dataserver:
+    image: "dataserver"
+    network_mode: "host"
+    volumes:
+      - ./ds_log:/dataserver/log
+      - ./etc:/dataserver/etc
+  oanda:
+    container_name: oanda
+    image: "dcext"
+    network_mode: "host"
+    command: "python dcext/mdlink/oanda.py"
+    environment:
+      OANDA_ACCOUNTID: ""
+      OANDA_TOKEN: ""
+      ETC_PATH: "/app/etc"
+    volumes:
+      - ./etc:/app/etc
